@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from random import randint
 
 def main():
+    words = []
     with open("words") as w:
         words = w.readlines()
     
