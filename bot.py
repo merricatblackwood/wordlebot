@@ -16,9 +16,9 @@ game_app_root = getShadowRoot(game_app)
 
 rows = game_app_root.find_elements(By.TAG_NAME, 'game-row')
 
-correct = [] #letters that are in the correct position
-absent = [] #letters that are not in the word
-present = [] #letters that are in the word but not in the correct position
+correct = {} #letters that are in the correct position
+absent = set() #letters that are not in the word
+present = {} #letters that are in the word but not in the correct position
 
 def main():
     closeModal()
@@ -51,7 +51,24 @@ def checkRow(row):
     tiles = driver.execute_script(
         "return arguments[0].querySelector('.row')", \
         row_root).find_elements(By.TAG_NAME, 'game-tile')
-    print(tiles)
+    
+    for i in range(0, len(tiles)):
+        status = driver.execute_script(
+            "return arguments[0].getAttribute('evaluation')", tiles[i]
+        )
+        letter = driver.execute_script(
+            "return arguments[0].getAttribute('letter')", tiles[i]
+        )
 
+        if status == 'absent':
+            absent.add(letter)
+        elif status == 'present':
+            if letter in present:
+                pressent[letter].add(i)
+            else:
+                present[letter] = {i}
+        elif status == 'correct':
+            correct[letter] = i
+        
 if __name__ == "__main__":
     main()
