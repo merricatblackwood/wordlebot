@@ -16,6 +16,10 @@ game_app_root = getShadowRoot(game_app)
 
 rows = game_app_root.find_elements(By.TAG_NAME, 'game-row')
 
+correct = [] #letters that are in the correct position
+absent = [] #letters that are not in the word
+present = [] #letters that are in the word but not in the correct position
+
 def main():
     closeModal()
     words = []
@@ -27,14 +31,27 @@ def main():
     populateRow(0, first_guess)
 
 def closeModal():
+    #closes the pop up modal that appears when the game starts
     game_modal = game_app_root.find_element(By.TAG_NAME, 'game-modal')
     game_modal_root = getShadowRoot(game_modal)
-    driver.execute_script("return arguments[0].querySelector('.close-icon').click()", game_modal_root)
+    driver.execute_script(
+        "return arguments[0].querySelector('.close-icon').click()", \
+        game_modal_root)
 
 def populateRow(row, guess):
+    #populates row with guess
     rows[row].send_keys(guess)
     rows[row].send_keys(Keys.ENTER)
+    checkRow(row)
 
-    
+def checkRow(row):
+    #checks all the letters in the row to see what letters are absent
+    # present or correct and adds them to the appropriate arrays
+    row_root = getShadowRoot(rows[row])
+    tiles = driver.execute_script(
+        "return arguments[0].querySelector('.row')", \
+        row_root).find_elements(By.TAG_NAME, 'game-tile')
+    print(tiles)
+
 if __name__ == "__main__":
     main()
