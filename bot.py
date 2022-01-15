@@ -1,7 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from random import randint
+from time import sleep
+import random
 
 def getShadowRoot(host):
     shadow_root = driver.execute_script("return arguments[0].shadowRoot", host)
@@ -27,8 +28,10 @@ def main():
         words = w.readlines()
     
     #TODO: better first guess algorithm
-    first_guess = words[randint(0, len(words))]
-    populateRow(0, first_guess)
+    guess = 'roate'               
+    for i in range(0, len(rows)):
+        populateRow(i, guess)
+        sleep(4)
 
 def closeModal():
     #closes the pop up modal that appears when the game starts
@@ -60,15 +63,18 @@ def checkRow(row):
             "return arguments[0].getAttribute('letter')", tiles[i]
         )
 
-        if status == 'absent':
-            absent.add(letter)
+        if status == 'correct':
+            correct[letter] = i
         elif status == 'present':
             if letter in present:
-                pressent[letter].add(i)
+                present[letter].add(i)
             else:
                 present[letter] = {i}
-        elif status == 'correct':
-            correct[letter] = i
+        elif status == 'absent' and letter not in present:
+            absent.add(letter)
         
+#def trimList(wl):
+    
+
 if __name__ == "__main__":
     main()
