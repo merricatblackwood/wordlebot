@@ -25,13 +25,13 @@ def main():
     closeModal()
     words = []
     with open("words") as w:
-        words = w.readlines()
+        words = [word.strip() for word in w.readlines()]
     
     #TODO: better first guess algorithm
+    print(len(words))
     guess = 'roate'               
-    for i in range(0, len(rows)):
-        populateRow(i, guess)
-        sleep(4)
+    populateRow(0, guess)
+    print(trimList(words))
 
 def closeModal():
     #closes the pop up modal that appears when the game starts
@@ -64,7 +64,10 @@ def checkRow(row):
         )
 
         if status == 'correct':
-            correct[letter] = i
+            if letter in correct:
+                correct[letter].add(i)
+            else:
+                present[letter] = {i}
         elif status == 'present':
             if letter in present:
                 present[letter].add(i)
@@ -73,8 +76,33 @@ def checkRow(row):
         elif status == 'absent' and letter not in present:
             absent.add(letter)
         
-#def trimList(wl):
-    
+def trimList(wl):
+    tmp = []
+    if len(absent) > 0:
+        for letter in absent:
+            print(letter)
+            for word in wl:
+                if letter in word:
+                    tmp.append(word)
 
+    return tmp
+
+#    if len(present) > 0:
+#        for letter in present:
+#            for word in wl:
+#                for position in present[letter]:
+#                    if letter not in word:
+#                        wl.remove(word)
+#                        break
+#                    elif word[position] == letter:
+#                        wl.remove(word)
+#
+#    if len(correct) > 0:
+#        for letter in correct:
+#            for word in wl:
+#                for position in correct[letter]:
+#                    if word[position] != letter:
+#                        wl.remove(word)
+#     
 if __name__ == "__main__":
     main()
