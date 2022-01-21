@@ -27,13 +27,17 @@ def main():
     with open("words") as w:
         words = [word.strip() for word in w.readlines()]
     
-    start = len(words)
     guess = 'roate'               
-    populateRow(0, guess)
-    words = trimList(words)
-    print(words)
-    print(start)
-    print(len(words))
+    for i in range(0, len(rows)):
+        print(i)
+        populateRow(i, guess)
+        sleep(2)
+        words = trimList(words)
+        guess = words[random.randint(0, len(words))]
+
+
+    #print(start)
+    #print(len(words))
 
 def closeModal():
     #closes the pop up modal that appears when the game starts
@@ -89,24 +93,32 @@ def trimList(wl):
             if removed == False:
                 tmp.append(word)
 
+    if len(present) > 0:
+        for word in tmp:
+            removed = False
+            for letter in present:
+                for position in present[letter]:
+                    if letter not in word:
+                        removed = True
+                        break
+                    elif word[position] == letter:
+                        removed = True
+                
+            if removed == True:
+                tmp.remove(word)
+
+    if len(correct) > 0:
+        for word in wl:
+            removed = False
+            for letter in correct:
+                for position in correct[letter]:
+                    if word[position] != letter:
+                        removed = True
+            if removed == True:
+                tmp.remove(word)
+
+    print(len(tmp))
     return tmp
 
-#    if len(present) > 0:
-#        for letter in present:
-#            for word in wl:
-#                for position in present[letter]:
-#                    if letter not in word:
-#                        wl.remove(word)
-#                        break
-#                    elif word[position] == letter:
-#                        wl.remove(word)
-#
-#    if len(correct) > 0:
-#        for letter in correct:
-#            for word in wl:
-#                for position in correct[letter]:
-#                    if word[position] != letter:
-#                        wl.remove(word)
-#     
 if __name__ == "__main__":
     main()
