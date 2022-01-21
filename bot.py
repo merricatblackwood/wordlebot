@@ -107,15 +107,15 @@ def trimList(wl):
             if removed == True:
                 tmp.remove(word)
 
-    if len(correct) > 0:
-        for word in wl:
-            removed = False
-            for letter in correct:
-                for position in correct[letter]:
-                    if word[position] != letter:
-                        removed = True
-            if removed == True:
-                tmp.remove(word)
+#    if len(correct) > 0:
+#        for word in wl:
+#            removed = False
+#            for letter in correct:
+#                for position in correct[letter]:
+#                    if word[position] != letter:
+#                        removed = True
+#            if removed == True:
+#                tmp.remove(word)
 
     print(len(tmp))
     return tmp
