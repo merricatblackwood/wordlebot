@@ -27,11 +27,13 @@ def main():
     with open("words") as w:
         words = [word.strip() for word in w.readlines()]
     
-    #TODO: better first guess algorithm
-    print(len(words))
+    start = len(words)
     guess = 'roate'               
     populateRow(0, guess)
-    print(trimList(words))
+    words = trimList(words)
+    print(words)
+    print(start)
+    print(len(words))
 
 def closeModal():
     #closes the pop up modal that appears when the game starts
@@ -79,11 +81,13 @@ def checkRow(row):
 def trimList(wl):
     tmp = []
     if len(absent) > 0:
-        for letter in absent:
-            print(letter)
-            for word in wl:
+        for word in wl:
+            removed = False
+            for letter in absent:
                 if letter in word:
-                    tmp.append(word)
+                    removed = True
+            if removed == False:
+                tmp.append(word)
 
     return tmp
 
