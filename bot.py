@@ -81,8 +81,8 @@ def checkRow(row):
                 present[letter] = {i}
         elif status == 'absent' and letter not in present:
             absent.add(letter)
-        
-def trimList(wl):
+
+def trimAbsent(wl):
     tmp = []
     if len(absent) > 0:
         for word in wl:
@@ -92,7 +92,10 @@ def trimList(wl):
                     removed = True
             if removed == False:
                 tmp.append(word)
+    return tmp
 
+def trimPresent(wl):
+    tmp=[]
     if len(present) > 0:
         for word in tmp:
             removed = False
@@ -104,8 +107,14 @@ def trimList(wl):
                     elif word[position] == letter:
                         removed = True
                 
-            if removed == True:
-                tmp.remove(word)
+            if removed == False:
+                tmp.append(word)
+    return tmp
+    
+        
+def trimList(wl):
+    tmp = trimAbsent(wl)
+    tmp = trimPresent(tmp)
 
 #    if len(correct) > 0:
 #        for word in wl:
