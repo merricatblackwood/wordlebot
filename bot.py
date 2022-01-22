@@ -29,10 +29,11 @@ def main():
     
     guess = 'roate'               
     for i in range(0, len(rows)):
-        print(i)
         populateRow(i, guess)
         sleep(2)
         words = trimList(words)
+        absent = set()
+        present = {}
         guess = words[random.randint(0, len(words))]
 
 
@@ -95,9 +96,10 @@ def trimAbsent(wl):
     return tmp
 
 def trimPresent(wl):
+    #TODO: needs fixing
     tmp=[]
     if len(present) > 0:
-        for word in tmp:
+        for word in wl:
             removed = False
             for letter in present:
                 for position in present[letter]:
@@ -113,8 +115,14 @@ def trimPresent(wl):
     
         
 def trimList(wl):
-    tmp = trimAbsent(wl)
-    tmp = trimPresent(tmp)
+    #TODO fix trimPresent
+    #TODO seperate and fix trimCorrect
+    tmp = wl
+    if len(absent) > 0:
+        tmp = trimAbsent(wl)
+    if len(present) > 0:
+        tmp = trimPresent(tmp)
+        print(tmp)
 
 #    if len(correct) > 0:
 #        for word in wl:
